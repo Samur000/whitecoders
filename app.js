@@ -4,12 +4,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 		if (target) {
 			e.preventDefault();
 
-			// Закрываем меню если оно открыто (для мобильных)
 			const navLinks = document.querySelector('.nav-links');
 			if (navLinks.classList.contains('active')) {
 				navLinks.classList.remove('active');
-
-				// Даем время на анимацию закрытия меню
 				setTimeout(() => {
 					window.scrollTo({
 						top: target.offsetTop - 80,
@@ -50,8 +47,6 @@ const contactForm = document.getElementById('contactForm');
 
 contactForm.addEventListener('submit', (e) => {
 	e.preventDefault();
-
-	// Здесь должна быть логика отправки формы
 	alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
 	contactForm.reset();
 });
@@ -64,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		el.style.opacity = '0';
 	});
 
-	// Постепенное появление элементов
 	setTimeout(() => {
 		fadeElements.forEach((el, index) => {
 			setTimeout(() => {
@@ -72,6 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
 			}, 200 * index);
 		});
 	}, 300);
+
+	initTypingAnimation();
+	initPortfolioModals();
 });
 
 // Hover эффекты для карточек услуг
@@ -87,12 +84,9 @@ serviceCards.forEach(card => {
 
 	card.addEventListener('mouseenter', () => setHover(true));
 	card.addEventListener('mouseleave', () => setHover(false));
-
-	// Для тач-устройств
 	card.addEventListener('touchstart', () => setHover(true), { passive: true });
 	card.addEventListener('touchend', () => setTimeout(() => setHover(false), 200));
 });
-
 
 // Анимация печатающегося кода
 function initTypingAnimation() {
@@ -103,28 +97,105 @@ function initTypingAnimation() {
 	codeElement.textContent = '';
 
 	let i = 0;
-	const speed = 40; // скорость печати (меньше = быстрее)
+	const speed = 40;
 
 	function typeWriter() {
 		if (i < code.length) {
 			codeElement.textContent += code.charAt(i);
 			i++;
 			setTimeout(typeWriter, speed);
-
-			// Прокрутка вниз по мере наполнения
 			codeElement.parentElement.scrollTop = codeElement.parentElement.scrollHeight;
 		} else {
-			// После завершения оставляем мигающий курсор
 			codeElement.innerHTML = code + '<span class="blinking-cursor">|</span>';
 		}
 	}
 
-	// Запускаем анимацию после небольшой задержки
 	setTimeout(typeWriter, 1000);
 }
+// Portfolio Modal
+function initPortfolioModals() {
+	const modal = document.querySelector('.portfolio-modal');
+	const modalClose = document.querySelector('.modal-close');
+	const modalTitle = document.querySelector('.modal-title');
+	const modalGallery = document.querySelector('.modal-gallery');
+	const modalInfo = document.querySelector('.modal-info');
+	const modalLink = document.querySelector('.modal-content .btn');
+	const detailButtons = document.querySelectorAll('.portfolio-details-btn');
 
-// Добавляем вызов функции в обработчик загрузки DOM
-document.addEventListener('DOMContentLoaded', () => {
-	// ... существующий код ...
-	initTypingAnimation();
-});
+	// Данные для модальных окон (можно расширить)
+	const projectsData = {
+		1: {
+			title: "Green Finance",
+			images: [
+				"https://malevich1.ru/%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.jpg",
+				"https://malevich1.ru/%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.jpg"
+			],
+			description: [
+				"<strong>Задача:</strong> Разработка платформы для управления экологическими инвестициями с нуля.",
+				"<strong>Технологии:</strong> Vue.js, Laravel, PostgreSQL, Chart.js",
+				"<strong>Сроки:</strong> 5 месяцев",
+				"<strong>Результат:</strong> Платформа обрабатывает более 10,000 транзакций в день с откликом менее 200мс"
+			],
+			link: "https://greenfinance.com"
+		},
+		2: {
+			title: "HealthTech App",
+			images: [
+				"https://malevich1.ru/%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.jpg",
+				"https://malevich1.ru/%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.jpg"
+			],
+			description: [
+				"<strong>Задача:</strong> Создание мобильного приложения для мониторинга здоровья.",
+				"<strong>Технологии:</strong> React Native, Node.js, MongoDB",
+				"<strong>Сроки:</strong> 3 месяца",
+				"<strong>Результат:</strong> Приложение скачали более 50,000 пользователей"
+			],
+			link: "https://healthtechapp.com"
+		},
+		3: {
+			title: "E-commerce Platform",
+			images: [
+				"https://malevich1.ru/%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.jpg",
+				"https://malevich1.ru/%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.jpg"
+			],
+			description: [
+				"<strong>Задача:</strong> Разработка платформы электронной коммерции с интеграцией платежей.",
+				"<strong>Технологии:</strong> React, Next.js, Stripe",
+				"<strong>Сроки:</strong> 6 месяцев",
+				"<strong>Результат:</strong> Оборот платформы превысил $1M в первый квартал"
+			],
+			link: "https://ecommerceplatform.com"
+		}
+	};
+
+	detailButtons.forEach(button => {
+		button.addEventListener('click', () => {
+			const projectId = button.getAttribute('data-project');
+			const project = projectsData[projectId];
+
+			// Заполняем модальное окно данными
+			modalTitle.textContent = project.title;
+			modalGallery.innerHTML = project.images.map(img =>
+				`<img src="${img}" alt="${project.title}">`).join('');
+			modalInfo.innerHTML = project.description.map(p =>
+				`<p>${p}</p>`).join('');
+			modalLink.href = project.link;
+
+			// Показываем модальное окно
+			modal.classList.add('active');
+			document.body.style.overflow = 'hidden';
+		});
+	});
+
+	modalClose.addEventListener('click', () => {
+		modal.classList.remove('active');
+		document.body.style.overflow = '';
+	});
+
+	modal.addEventListener('click', (e) => {
+		if (e.target === modal) {
+			modal.classList.remove('active');
+			document.body.style.overflow = '';
+		}
+	});
+}
