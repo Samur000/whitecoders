@@ -125,47 +125,19 @@ function initPortfolioModals() {
 	// Данные для модальных окон (можно расширить)
 	const projectsData = {
 		1: {
-			title: "Green Finance",
+			title: "Swift Star",
 			images: [
-				"https://malevich1.ru/%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.jpg",
-				"https://malevich1.ru/%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.jpg"
+				"swift1.png",
+				"swift3.png"
 			],
 			description: [
-				"<strong>Задача:</strong> Разработка платформы для управления экологическими инвестициями с нуля.",
-				"<strong>Технологии:</strong> Vue.js, Laravel, PostgreSQL, Chart.js",
-				"<strong>Сроки:</strong> 5 месяцев",
-				"<strong>Результат:</strong> Платформа обрабатывает более 10,000 транзакций в день с откликом менее 200мс"
+				"<strong>Задача:</strong></br> - Разработка лендинга для пролвижения услуг по набору персонала под ключ. </br> - Создание логотипа",
+				"<strong>Технологии: </strong>HTML, CSS, JavaScript, PHP",
+				"<strong>Сроки:</strong> 1 неделя",
+				"<strong>Результат:</strong> Продающий лендинг в премиальном минималистичном стиле, адаптированный под разные устройства и ОС"
 			],
-			link: "https://greenfinance.com"
+			link: "https://swift-star.ru"
 		},
-		2: {
-			title: "HealthTech App",
-			images: [
-				"https://malevich1.ru/%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.jpg",
-				"https://malevich1.ru/%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.jpg"
-			],
-			description: [
-				"<strong>Задача:</strong> Создание мобильного приложения для мониторинга здоровья.",
-				"<strong>Технологии:</strong> React Native, Node.js, MongoDB",
-				"<strong>Сроки:</strong> 3 месяца",
-				"<strong>Результат:</strong> Приложение скачали более 50,000 пользователей"
-			],
-			link: "https://healthtechapp.com"
-		},
-		3: {
-			title: "E-commerce Platform",
-			images: [
-				"https://malevich1.ru/%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.jpg",
-				"https://malevich1.ru/%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.jpg"
-			],
-			description: [
-				"<strong>Задача:</strong> Разработка платформы электронной коммерции с интеграцией платежей.",
-				"<strong>Технологии:</strong> React, Next.js, Stripe",
-				"<strong>Сроки:</strong> 6 месяцев",
-				"<strong>Результат:</strong> Оборот платформы превысил $1M в первый квартал"
-			],
-			link: "https://ecommerceplatform.com"
-		}
 	};
 
 	detailButtons.forEach(button => {
@@ -199,3 +171,62 @@ function initPortfolioModals() {
 		}
 	});
 }
+
+// Анимация шагов процесса
+function initProcessAnimation() {
+	const processSteps = document.querySelectorAll('.process-step');
+
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				const step = entry.target;
+				const stepNumber = parseInt(step.getAttribute('data-step'));
+
+				// Задержка для каждого шага
+				setTimeout(() => {
+					step.classList.add('active');
+				}, 200 * stepNumber);
+			}
+		});
+	}, {
+		threshold: 0.3,
+		rootMargin: '0px 0px -100px 0px'
+	});
+
+	processSteps.forEach(step => {
+		observer.observe(step);
+	});
+}
+
+// Вызовите эту функцию в DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+	initProcessAnimation();
+});
+
+
+// FAQ Accordion
+function initFAQAccordion() {
+	const faqItems = document.querySelectorAll('.faq-item');
+
+	faqItems.forEach(item => {
+		const question = item.querySelector('.faq-question');
+
+		question.addEventListener('click', () => {
+			// Закрываем все открытые вопросы
+			faqItems.forEach(otherItem => {
+				if (otherItem !== item && otherItem.classList.contains('active')) {
+					otherItem.classList.remove('active');
+				}
+			});
+
+			// Открываем/закрываем текущий вопрос
+			item.classList.toggle('active');
+		});
+	});
+}
+
+// Вызовите эту функцию в DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+	initFAQAccordion();
+	// ... остальной код инициализации
+});
