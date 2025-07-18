@@ -96,15 +96,6 @@ serviceCards.forEach(card => {
 
 // Анимация печатающегося кода
 function initTypingAnimation() {
-	if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-		const codeElement = document.querySelector('.typing-animation');
-		if (codeElement) {
-			codeElement.style.animation = 'none';
-			codeElement.classList.remove('typing-animation');
-		}
-		return;
-	}
-
 	const codeElement = document.querySelector('.typing-animation');
 	if (!codeElement) return;
 
