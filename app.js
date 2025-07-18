@@ -1,17 +1,27 @@
-// Плавная прокрутка к якорям
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 	anchor.addEventListener('click', function (e) {
-		e.preventDefault();
-
 		const target = document.querySelector(this.getAttribute('href'));
 		if (target) {
-			window.scrollTo({
-				top: target.offsetTop - 80,
-				behavior: 'smooth'
-			});
+			e.preventDefault();
 
-			// Закрытие меню на мобильных устройствах
-			document.querySelector('.nav-links').classList.remove('active');
+			// Закрываем меню если оно открыто (для мобильных)
+			const navLinks = document.querySelector('.nav-links');
+			if (navLinks.classList.contains('active')) {
+				navLinks.classList.remove('active');
+
+				// Даем время на анимацию закрытия меню
+				setTimeout(() => {
+					window.scrollTo({
+						top: target.offsetTop - 80,
+						behavior: 'smooth'
+					});
+				}, 300);
+			} else {
+				window.scrollTo({
+					top: target.offsetTop - 80,
+					behavior: 'smooth'
+				});
+			}
 		}
 	});
 });
@@ -82,35 +92,44 @@ serviceCards.forEach(card => {
 
 // Анимация печатающегося кода
 function initTypingAnimation() {
-    const codeElement = document.querySelector('.typing-animation');
-    if (!codeElement) return;
+	if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+		const codeElement = document.querySelector('.typing-animation');
+		if (codeElement) {
+			codeElement.style.animation = 'none';
+			codeElement.classList.remove('typing-animation');
+		}
+		return;
+	}
 
-    const code = codeElement.textContent;
-    codeElement.textContent = '';
-    
-    let i = 0;
-    const speed = 40; // скорость печати (меньше = быстрее)
-    
-    function typeWriter() {
-        if (i < code.length) {
-            codeElement.textContent += code.charAt(i);
-            i++;
-            setTimeout(typeWriter, speed);
-            
-            // Прокрутка вниз по мере наполнения
-            codeElement.parentElement.scrollTop = codeElement.parentElement.scrollHeight;
-        } else {
-            // После завершения оставляем мигающий курсор
-            codeElement.innerHTML = code + '<span class="blinking-cursor">|</span>';
-        }
-    }
-    
-    // Запускаем анимацию после небольшой задержки
-    setTimeout(typeWriter, 1000);
+	const codeElement = document.querySelector('.typing-animation');
+	if (!codeElement) return;
+
+	const code = codeElement.textContent;
+	codeElement.textContent = '';
+
+	let i = 0;
+	const speed = 40; // скорость печати (меньше = быстрее)
+
+	function typeWriter() {
+		if (i < code.length) {
+			codeElement.textContent += code.charAt(i);
+			i++;
+			setTimeout(typeWriter, speed);
+
+			// Прокрутка вниз по мере наполнения
+			codeElement.parentElement.scrollTop = codeElement.parentElement.scrollHeight;
+		} else {
+			// После завершения оставляем мигающий курсор
+			codeElement.innerHTML = code + '<span class="blinking-cursor">|</span>';
+		}
+	}
+
+	// Запускаем анимацию после небольшой задержки
+	setTimeout(typeWriter, 1000);
 }
 
 // Добавляем вызов функции в обработчик загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
-    // ... существующий код ...
-    initTypingAnimation();
+	// ... существующий код ...
+	initTypingAnimation();
 });
