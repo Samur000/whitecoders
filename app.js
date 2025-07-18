@@ -78,15 +78,19 @@ document.addEventListener('DOMContentLoaded', () => {
 const serviceCards = document.querySelectorAll('.service-card');
 
 serviceCards.forEach(card => {
-	card.addEventListener('mouseenter', () => {
-		card.style.transform = 'translateY(-10px)';
-		card.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.1)';
-	});
+	const setHover = (hover) => {
+		card.style.transform = hover ? 'translateY(-10px)' : 'translateY(0)';
+		card.style.boxShadow = hover
+			? '0 10px 25px rgba(0, 0, 0, 0.1)'
+			: '0 4px 12px rgba(0, 0, 0, 0.08)';
+	};
 
-	card.addEventListener('mouseleave', () => {
-		card.style.transform = 'translateY(0)';
-		card.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.08)';
-	});
+	card.addEventListener('mouseenter', () => setHover(true));
+	card.addEventListener('mouseleave', () => setHover(false));
+
+	// Для тач-устройств
+	card.addEventListener('touchstart', () => setHover(true), { passive: true });
+	card.addEventListener('touchend', () => setTimeout(() => setHover(false), 200));
 });
 
 
